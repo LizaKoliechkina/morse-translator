@@ -1,5 +1,10 @@
 # morse-translator
 ## Morse Translator App
 
-C++ application that gets a different data types, translates information to Morse code and play the code with a sound
+The C++ application, which gets different data types, translates an information into Morse code and reproduces the code by means of sound
 
+### Technologies and Tools
+
+Microsoft Visual C++ 2017 
+
+Microsoft Visual Studio Community 2017
