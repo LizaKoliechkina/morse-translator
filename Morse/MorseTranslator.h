@@ -1,5 +1,14 @@
 #pragma once
 
+//
+//  morseTranslator.h
+//  
+//	Class, given a different types of data, translates information to Morse code and play the code with a sound
+//
+//  Created by Yelyzaveta Koliechkina on 11/05/2019.
+//  Copyright © 2019 Yelyzaveta Koliechkina. All rights reserved.
+//
+
 #ifndef morseTranslator_h
 #define morseTranslator_h
 
@@ -11,33 +20,62 @@
 class morseTranslator
 {
 protected:
+	int Freq;
 	int Pause;
 	int DotTime;
 	int DashTime;
 	int CharPause;
-	std::string kod;	 											// zmienna dla przechowywania kodu w postaci Morsea  - systemowa zmienna
+	std::string kod;	 											
 public:
-	int Freq;
-	morseTranslator();						 						// konstruktor bezparametrowy
-	const morseTranslator & operator = (const morseTranslator &A);	// operator '='
-	~morseTranslator();   									// destruktor virtualny (virtualny dla tego zeby nie bylo zadnych problemow przy dziedziczeniu) 
+	morseTranslator();						 						
+	const morseTranslator & operator = (const morseTranslator &A);	
+	~morseTranslator();   									
 
-	void translate(std::string text);  			// ta metoda tlumaczy otrzymane dane na kod Morsea i przypisuje wynik do zmiennej systemowej 'kod'
-	void sound();								// odtwarza kod Morsea za pomoca dzwieku, wykorzystajac funkcje Beep(Hz,t)
+	void translate(std::string text);  			// function to translate Morse code
+	void sound();								// function to play Morse code with a sound
 
-	void setFrequency(int value);				// pobiera wartosc zmiennej chronionej Freq
-	void setPause(int value);					// pobiera wartosc zmiennej chronionej Pause
-	void setDotTime(int value);					// pobiera wartosc zmiennej chronionej DotTime
-	void setDashTime(int value);				// pobiera wartosc zmiennej chronionej DashTime
-	void setCharPause(int value);				// pobiera wartosc zmiennej chronionej CharPause
+	// Setters and getters 
 
-	int getFrequency();							// zwraca wartosc zmiennej chronionej Freq
-	int getPause();								// zwraca wartosc zmiennej chronionej Pause
-	int getDotTime();							// zwraca wartosc zmiennej chronionej DotTime
-	int getDashTime();							// zwraca wartosc zmiennej chronionej DashTime
-	int getCharPause();							// zwraca wartosc zmiennej chronionej CharPause
+	void setFrequency(int value);				
+	void setPause(int value);					
+	void setDotTime(int value);					
+	void setDashTime(int value);				
+	void setCharPause(int value);				
 
+	int getFrequency();							
+	int getPause();								
+	int getDotTime();							
+	int getDashTime();							
+	int getCharPause();							
+
+	template <typename T>
+	friend morseTranslator & operator << (morseTranslator& m, const T & value);
+	friend morseTranslator & operator << (morseTranslator& out, morseTranslator& (*manip) (morseTranslator& out));
+	friend morseTranslator & pause(morseTranslator& out);
 };
 
+template <typename T> 	
+inline morseTranslator & operator << (morseTranslator & m, const T & value)    {
 
-#endif // morseTranslator_h
+	std::ostringstream stream;
+	stream << std::setprecision(12);
+	stream << value;
+	std::string str = stream.str();
+
+	m.translate(str);
+	m.sound();
+	return m;
+}
+
+inline morseTranslator & operator << (morseTranslator& out, morseTranslator& (*manip)(morseTranslator& out))    
+{
+	return manip(out);
+}
+
+inline morseTranslator & pause(morseTranslator & out)  	  
+{
+	Sleep(out.getCharPause());
+	return out;
+};
+
+#endif /* morseTranslator_h */
