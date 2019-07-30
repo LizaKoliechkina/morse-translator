@@ -1,13 +1,17 @@
 #pragma once
 
-//
-//  morseTranslator.h
-//  
-//	Class, given a different types of data, translates information to Morse code and play the code with a sound
-//
-//  Created by Yelyzaveta Koliechkina on 11/05/2019.
-//  Copyright © 2019 Yelyzaveta Koliechkina. All rights reserved.
-//
+/**
+
+	morseTranslator.h
+
+	Class, given a different types of data, translates information into Morse code
+	and reproduces the code by means of sound
+
+	@author Yelyzaveta Koliechkina
+	@version 1.0 11/05/2019
+
+*/
+
 
 #ifndef morseTranslator_h
 #define morseTranslator_h
@@ -31,8 +35,12 @@ public:
 	const morseTranslator & operator = (const morseTranslator &A);	
 	~morseTranslator();   									
 
-	void translate(std::string text);  			// function to translate Morse code
-	void sound();								// function to play Morse code with a sound
+	// function to translate Morse code
+	void translate(std::string text);
+
+	// function to reproduces the code by means of sound
+	void sound();
+
 
 	// Setters and getters 
 
@@ -49,8 +57,14 @@ public:
 	int getCharPause();							
 
 	template <typename T>
-	friend morseTranslator & operator << (morseTranslator& m, const T & value);
+
+	// friend operator which takes any data types
+	friend morseTranslator & operator << (morseTranslator& m, const T & value); 
+
+	// friend operator which takes a function pointer
 	friend morseTranslator & operator << (morseTranslator& out, morseTranslator& (*manip) (morseTranslator& out));
+
+	// friend manipulator which makes a pause when playing Morse code
 	friend morseTranslator & pause(morseTranslator& out);
 };
 
